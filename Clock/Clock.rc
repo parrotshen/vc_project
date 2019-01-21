@@ -1,0 +1,564 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Chinese (Taiwan) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHT)
+#ifdef _WIN32
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_TRADITIONAL
+#pragma code_page(950)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHT)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 4, 1\r\n"
+    "#pragma code_page(950)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\Clock.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""l.cht\\afxres.rc""          // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\Clock.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 215, 87
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "關於 Clock"
+FONT 9, "新細明體"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,21,21
+    LTEXT           "Clock Version 1.0",IDC_STATIC,40,10,78,8,SS_NOPREFIX
+    LTEXT           "Copyright (C) 2002",IDC_STATIC,40,25,74,8
+    DEFPUSHBUTTON   "確定",IDOK,158,7,50,14,WS_GROUP
+    LTEXT           "小時鐘 - Written By Y.J.Shen 2002",IDC_STATIC,40,42,119,
+                    8
+    LTEXT           "特別感謝 Reinhard 在 Tray Icon 上的技術支援",IDC_STATIC,
+                    40,59,158,8
+END
+
+IDD_CLOCK_DIALOG DIALOGEX 0, 0, 107, 47
+STYLE DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | 
+    WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "小時鐘"
+FONT 9, "新細明體", 0, 0, 0x1
+BEGIN
+    CONTROL         141,IDC_STATIC,"Static",SS_BITMAP,7,1,93,7
+    CONTROL         140,IDC_STATIC,"Static",SS_BITMAP,34,14,4,13
+    CONTROL         140,IDC_STATIC,"Static",SS_BITMAP,69,14,4,13
+    CONTROL         138,IDC_STATIC_H1,"Static",SS_BITMAP,7,11,11,19
+    CONTROL         138,IDC_STATIC_H2,"Static",SS_BITMAP,20,11,11,19
+    CONTROL         138,IDC_STATIC_M1,"Static",SS_BITMAP,41,11,11,19
+    CONTROL         138,IDC_STATIC_M2,"Static",SS_BITMAP,55,11,11,19
+    CONTROL         138,IDC_STATIC_S1,"Static",SS_BITMAP,76,11,11,19
+    CONTROL         138,IDC_STATIC_S2,"Static",SS_BITMAP,89,11,11,19
+END
+
+IDD_ALERTDLG DIALOGEX 0, 0, 170, 156
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "設定鬧鈴"
+FONT 10, "System", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,7,137,36,12
+    PUSHBUTTON      "Cancel",IDCANCEL,127,137,36,12
+    CONTROL         "List1",IDC_LIST_SCHEDULE,"SysListView32",LVS_REPORT | 
+                    LVS_SORTASCENDING | WS_BORDER | WS_TABSTOP,7,83,156,50
+    COMBOBOX        IDC_COMBO_HOUR,12,45,36,88,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    COMBOBOX        IDC_COMBO_MINUTE,58,45,36,88,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Hour",IDC_STATIC,19,36,17,8
+    LTEXT           "Minute",IDC_STATIC,64,36,23,8
+    LTEXT           "：",IDC_STATIC,49,46,9,8
+    PUSHBUTTON      "設 定",IDC_BUTTON_ADD,107,21,28,15,0,WS_EX_STATICEDGE
+    EDITTEXT        IDC_EDIT_MESSAGE,12,61,123,12,ES_AUTOHSCROLL
+    GROUPBOX        "",IDC_STATIC,7,7,156,71
+    COMBOBOX        IDC_COMBO_MONTH,12,22,36,88,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Month",IDC_STATIC,19,13,21,8
+    COMBOBOX        IDC_COMBO_DAY,58,22,36,88,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "Day",IDC_STATIC,64,13,14,8
+    PUSHBUTTON      "刪 除",IDC_BUTTON_DEL,107,43,28,15,0,WS_EX_STATICEDGE
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040404B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "Clock MFC Application\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "Clock\0"
+            VALUE "LegalCopyright", "Copyright (C) 2001\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "Clock.EXE\0"
+            VALUE "ProductName", "Clock Application\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x404, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 208
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 80
+    END
+
+    IDD_CLOCK_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 100
+        BOTTOMMARGIN, 40
+    END
+
+    IDD_ALERTDLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 163
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 149
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MYMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "功能(&F)"
+    BEGIN
+        MENUITEM "鬧鐘",                        ID_FUNC_ALERT
+        MENUITEM "整點報時",                    ID_FUNC_BEEP
+        MENUITEM "鬧鈴靜音",                    ID_FUNC_MUTE
+        MENUITEM SEPARATOR
+        MENUITEM "Exit",                        ID_FUNC_EXIT
+    END
+    POPUP "設定(&S)"
+    BEGIN
+        MENUITEM "鬧鐘設定",                    ID_SETTING_ALERT
+        MENUITEM SEPARATOR
+        MENUITEM "最上層顯示",                  ID_SETTING_TOPMOST
+        MENUITEM "半透明狀態",                  ID_SETTING_TRANSPARENT
+        MENUITEM "System Tray",                 ID_SETTING_TRAYICON
+    END
+    POPUP "說明(&H)"
+    BEGIN
+        MENUITEM "關於",                        ID_HELP_ABOUT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_NUMBER_0            BITMAP  DISCARDABLE     "res\\0.BMP"
+IDB_NUMBER_1            BITMAP  DISCARDABLE     "res\\1.BMP"
+IDB_NUMBER_2            BITMAP  DISCARDABLE     "res\\2.BMP"
+IDB_NUMBER_3            BITMAP  DISCARDABLE     "res\\3.BMP"
+IDB_NUMBER_4            BITMAP  DISCARDABLE     "res\\4.BMP"
+IDB_NUMBER_5            BITMAP  DISCARDABLE     "res\\5.BMP"
+IDB_NUMBER_6            BITMAP  DISCARDABLE     "res\\6.BMP"
+IDB_NUMBER_7            BITMAP  DISCARDABLE     "res\\7.BMP"
+IDB_NUMBER_8            BITMAP  DISCARDABLE     "res\\8.BMP"
+IDB_NUMBER_9            BITMAP  DISCARDABLE     "res\\9.BMP"
+IDB_BITMAP_COLON        BITMAP  DISCARDABLE     "res\\Colon.bmp"
+IDB_BITMAP_HMS          BITMAP  DISCARDABLE     "res\\HMS.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_ALERTDLG DLGINIT
+BEGIN
+    IDC_COMBO_HOUR, 0x403, 3, 0
+0x3030, "\000" 
+    IDC_COMBO_HOUR, 0x403, 3, 0
+0x3130, "\000" 
+    IDC_COMBO_HOUR, 0x403, 3, 0
+0x3230, "\000" 
+    IDC_COMBO_HOUR, 0x403, 3, 0
+0x3330, "\000" 
+    IDC_COMBO_HOUR, 0x403, 3, 0
+0x3430, "\000" 
+    IDC_COMBO_HOUR, 0x403, 3, 0
+0x3530, "\000" 
+    IDC_COMBO_HOUR, 0x403, 3, 0
+0x3630, "\000" 
+    IDC_COMBO_HOUR, 0x403, 3, 0
+0x3730, "\000" 
+    IDC_COMBO_HOUR, 0x403, 3, 0
+0x3830, "\000" 
+    IDC_COMBO_HOUR, 0x403, 3, 0
+0x3930, "\000" 
+    IDC_COMBO_HOUR, 0x403, 3, 0
+0x3031, "\000" 
+    IDC_COMBO_HOUR, 0x403, 3, 0
+0x3131, "\000" 
+    IDC_COMBO_HOUR, 0x403, 3, 0
+0x3231, "\000" 
+    IDC_COMBO_HOUR, 0x403, 3, 0
+0x3331, "\000" 
+    IDC_COMBO_HOUR, 0x403, 3, 0
+0x3431, "\000" 
+    IDC_COMBO_HOUR, 0x403, 3, 0
+0x3531, "\000" 
+    IDC_COMBO_HOUR, 0x403, 3, 0
+0x3631, "\000" 
+    IDC_COMBO_HOUR, 0x403, 3, 0
+0x3731, "\000" 
+    IDC_COMBO_HOUR, 0x403, 3, 0
+0x3831, "\000" 
+    IDC_COMBO_HOUR, 0x403, 3, 0
+0x3931, "\000" 
+    IDC_COMBO_HOUR, 0x403, 3, 0
+0x3032, "\000" 
+    IDC_COMBO_HOUR, 0x403, 3, 0
+0x3132, "\000" 
+    IDC_COMBO_HOUR, 0x403, 3, 0
+0x3232, "\000" 
+    IDC_COMBO_HOUR, 0x403, 3, 0
+0x3332, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3030, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3130, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3230, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3330, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3430, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3530, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3630, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3730, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3830, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3930, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3031, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3131, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3231, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3331, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3431, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3531, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3631, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3731, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3831, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3931, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3032, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3132, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3232, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3332, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3432, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3532, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3632, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3732, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3832, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3932, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3033, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3133, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3233, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3333, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3433, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3533, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3633, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3733, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3833, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3933, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3034, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3134, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3234, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3334, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3434, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3534, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3634, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3734, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3834, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3934, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3035, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3135, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3235, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3335, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3435, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3535, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3635, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3735, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3835, "\000" 
+    IDC_COMBO_MINUTE, 0x403, 3, 0
+0x3935, "\000" 
+    IDC_COMBO_MONTH, 0x403, 3, 0
+0x3130, "\000" 
+    IDC_COMBO_MONTH, 0x403, 3, 0
+0x3230, "\000" 
+    IDC_COMBO_MONTH, 0x403, 3, 0
+0x3330, "\000" 
+    IDC_COMBO_MONTH, 0x403, 3, 0
+0x3430, "\000" 
+    IDC_COMBO_MONTH, 0x403, 3, 0
+0x3530, "\000" 
+    IDC_COMBO_MONTH, 0x403, 3, 0
+0x3630, "\000" 
+    IDC_COMBO_MONTH, 0x403, 3, 0
+0x3730, "\000" 
+    IDC_COMBO_MONTH, 0x403, 3, 0
+0x3830, "\000" 
+    IDC_COMBO_MONTH, 0x403, 3, 0
+0x3930, "\000" 
+    IDC_COMBO_MONTH, 0x403, 3, 0
+0x3031, "\000" 
+    IDC_COMBO_MONTH, 0x403, 3, 0
+0x3131, "\000" 
+    IDC_COMBO_MONTH, 0x403, 3, 0
+0x3231, "\000" 
+    IDC_COMBO_DAY, 0x403, 3, 0
+0x3130, "\000" 
+    IDC_COMBO_DAY, 0x403, 3, 0
+0x3230, "\000" 
+    IDC_COMBO_DAY, 0x403, 3, 0
+0x3330, "\000" 
+    IDC_COMBO_DAY, 0x403, 3, 0
+0x3430, "\000" 
+    IDC_COMBO_DAY, 0x403, 3, 0
+0x3530, "\000" 
+    IDC_COMBO_DAY, 0x403, 3, 0
+0x3630, "\000" 
+    IDC_COMBO_DAY, 0x403, 3, 0
+0x3730, "\000" 
+    IDC_COMBO_DAY, 0x403, 3, 0
+0x3830, "\000" 
+    IDC_COMBO_DAY, 0x403, 3, 0
+0x3930, "\000" 
+    IDC_COMBO_DAY, 0x403, 3, 0
+0x3031, "\000" 
+    IDC_COMBO_DAY, 0x403, 3, 0
+0x3131, "\000" 
+    IDC_COMBO_DAY, 0x403, 3, 0
+0x3231, "\000" 
+    IDC_COMBO_DAY, 0x403, 3, 0
+0x3331, "\000" 
+    IDC_COMBO_DAY, 0x403, 3, 0
+0x3431, "\000" 
+    IDC_COMBO_DAY, 0x403, 3, 0
+0x3531, "\000" 
+    IDC_COMBO_DAY, 0x403, 3, 0
+0x3631, "\000" 
+    IDC_COMBO_DAY, 0x403, 3, 0
+0x3731, "\000" 
+    IDC_COMBO_DAY, 0x403, 3, 0
+0x3831, "\000" 
+    IDC_COMBO_DAY, 0x403, 3, 0
+0x3931, "\000" 
+    IDC_COMBO_DAY, 0x403, 3, 0
+0x3032, "\000" 
+    IDC_COMBO_DAY, 0x403, 3, 0
+0x3132, "\000" 
+    IDC_COMBO_DAY, 0x403, 3, 0
+0x3232, "\000" 
+    IDC_COMBO_DAY, 0x403, 3, 0
+0x3332, "\000" 
+    IDC_COMBO_DAY, 0x403, 3, 0
+0x3432, "\000" 
+    IDC_COMBO_DAY, 0x403, 3, 0
+0x3532, "\000" 
+    IDC_COMBO_DAY, 0x403, 3, 0
+0x3632, "\000" 
+    IDC_COMBO_DAY, 0x403, 3, 0
+0x3732, "\000" 
+    IDC_COMBO_DAY, 0x403, 3, 0
+0x3832, "\000" 
+    IDC_COMBO_DAY, 0x403, 3, 0
+0x3932, "\000" 
+    IDC_COMBO_DAY, 0x403, 3, 0
+0x3033, "\000" 
+    IDC_COMBO_DAY, 0x403, 3, 0
+0x3133, "\000" 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABOUTBOX            "關於 Clock(&A)..."
+END
+
+#endif    // Chinese (Taiwan) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHT)
+#ifdef _WIN32
+LANGUAGE 4, 1
+#pragma code_page(950)
+#endif //_WIN32
+#include "res\Clock.rc2"  // non-Microsoft Visual C++ edited resources
+#include "l.cht\afxres.rc"          // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
