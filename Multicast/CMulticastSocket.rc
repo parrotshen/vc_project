@@ -1,0 +1,236 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\CMulticastSocket.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\CMulticastSocket.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 217, 97
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About CMulticastSocket"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,21,20
+    LTEXT           "Multicast Chat Program",IDC_STATIC,41,18,119,8,
+                    SS_NOPREFIX
+    LTEXT           "Author:  Adeel Jamil Siddiqui\n\nCopyright (C) 1999",
+                    IDC_STATIC,40,34,119,31
+    DEFPUSHBUTTON   "OK",IDOK,178,7,32,14,WS_GROUP
+END
+
+IDD_CMULTICASTSOCKET_DIALOG DIALOGEX 0, 0, 244, 136
+STYLE DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | 
+    WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Multicast Socket"
+FONT 10, "System"
+BEGIN
+    EDITTEXT        IDC_CHATMESSAGE,7,93,230,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "S&end",IDSEND,59,115,40,14
+    PUSHBUTTON      "&Join",IDC_JOIN,105,115,40,14
+    PUSHBUTTON      "&Leave",IDC_LEAVE,151,115,40,14
+    PUSHBUTTON      "&Quit",IDQUIT,197,115,40,14
+    EDITTEXT        IDC_CHATWINDOW,7,7,230,80,ES_MULTILINE | ES_AUTOVSCROLL | 
+                    ES_READONLY | WS_VSCROLL | NOT WS_TABSTOP
+END
+
+IDD_JOINGROUP_DIALOG DIALOG DISCARDABLE  0, 0, 160, 92
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Join Group"
+FONT 10, "System"
+BEGIN
+    EDITTEXT        IDC_IPADDRESS,68,7,85,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_PORT,68,23,85,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_TTL,68,40,85,14,ES_AUTOHSCROLL
+    CONTROL         "Loop Back",IDC_LOOPBACK,"Button",BS_AUTOCHECKBOX | 
+                    BS_LEFTTEXT | WS_TABSTOP,7,57,67,8
+    DEFPUSHBUTTON   "OK",IDOK,7,71,40,14
+    PUSHBUTTON      "Cancel",IDCANCEL,113,71,40,14
+    LTEXT           "Host Group IP",IDC_STATIC,7,10,46,9
+    LTEXT           "Time To Live",IDC_STATIC,7,43,43,8
+    LTEXT           "Host Group Port",IDC_STATIC,7,26,57,8
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "CMulticastSocket MFC Application\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "CMulticastSocket\0"
+            VALUE "LegalCopyright", "Copyright (C) 1999\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "CMulticastSocket.EXE\0"
+            VALUE "ProductName", "CMulticastSocket Application\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 210
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 90
+    END
+
+    IDD_CMULTICASTSOCKET_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 237
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 129
+    END
+
+    IDD_JOINGROUP_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 153
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 85
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About CMulticastSocket..."
+    IDP_SOCKETS_INIT_FAILED "Windows sockets initialization failed."
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "res\CMulticastSocket.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
