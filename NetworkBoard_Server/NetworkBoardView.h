@@ -26,10 +26,10 @@ public:
 	CUserSocket* m_HeadSocket;    //串列首的指標
 	CUserSocket* m_TailSocket;    //串列尾的指標
 	CUserSocket* m_CurrentSocket; //目前節點的指標
-	int m_index;                  //串列長度
+	UINT  m_Index;                //串列長度
 
-	CString m_connection;
-	CFont m_font;
+	CString m_Connection;
+	CFont m_Font;
 
 // Operations
 public:

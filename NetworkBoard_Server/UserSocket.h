@@ -18,8 +18,9 @@ class CUserSocket : public CSocket
 // Attributes
 public:
 	CNetworkBoardView* m_MyView;
-	CUserSocket* m_front;
-	CUserSocket* m_rear;
+	CUserSocket* m_Prev;
+	CUserSocket* m_Next;
+	BYTE  m_RecvData[1024];
 
 	///////////////////////////////////////////////
 	// Socket-Link-List Structure:               //

@@ -23,14 +23,15 @@ public:
 	CNetworkBoardDoc* GetDocument();
 
 	CClientSocket* m_Client;
-	CString m_server_ip;
-	int m_server_port;
-	CFont m_font;
-	BOOL m_is_modify;
+	CString m_ServerIp;
+	UINT    m_ServerPort;
+	CFont   m_Font;
+	BOOL    m_IsModify;
 
 // Operations
 public:
 	void ConnectToServer();
+	void DisconnectToServer();
 	void AppendMessage(LPCSTR lpszMessage);
 
 // Overrides

@@ -18,8 +18,9 @@ static char THIS_FILE[] = __FILE__;
 CUserSocket::CUserSocket(CNetworkBoardView* view)
 {
 	m_MyView = view;
-	m_front = NULL;
-	m_rear = NULL;
+	m_Prev = NULL;
+	m_Next = NULL;
+	memset(m_RecvData, 0, 1024);
 }
 
 CUserSocket::~CUserSocket()
@@ -45,51 +46,51 @@ void CUserSocket::OnReceive(int nErrorCode)
 
 	m_MyView->m_CurrentSocket = this;
 
+	memset(m_RecvData, 0, 1024);
 	// ---------------------
-	//  封包格式(1024 bits)
+	//  封包格式(1024 bytes)
 	// ---------------------
 	// +----+--------+
 	// |Flag|  Data  |
 	// +----+--------+
-	int ReceDataLen = 1024;
-	byte* ReceData = new byte[ReceDataLen+1];
-	memset(ReceData, 0x00, ReceDataLen+1);
-	int ret = Receive(ReceData, ReceDataLen);
-
-	// --------------------------
-	//  接收使用者傳來的資料長度
-	// --------------------------
-	// -1    = 使用者關閉連線
-	// 0     = 清除目前文字的內容
-	// other = 正常顯示接收的資料
-	int flag;
-	memcpy(&flag, ReceData, sizeof(int));
-	switch( flag )
+	int len = Receive(m_RecvData, 1024);
+	if (len >= 4)
 	{
-		case -1:
-			//使用者端關閉連線
-			m_MyView->DeleteClient();
-			break;
-		case 0:
-			//清除所有文字
-			m_MyView->SetWindowText( NULL );
-			//送給其他所有使用者
-			m_MyView->SendToAllUser(NULL, 0);
-			break;
-		default:
-			//接收並顯示使用者端的資料
-			int size = 1024 - sizeof(int);
-			byte* buf = new byte[size];
-			memset(buf, 0x00, size);
-			memcpy(buf, ReceData+sizeof(int), size);
-			if(flag == 1)
-				m_MyView->SetWindowText( (LPCTSTR)buf );
-			else
-				m_MyView->AppendMessage( (LPCTSTR)buf );
-			delete buf;
-			//送給其他所有使用者
-			m_MyView->SendToAllUser((LPCTSTR)ReceData, ReceDataLen);
-			break;
+		// --------------------------
+		//  接收使用者傳來的資料長度
+		// --------------------------
+		// -1    = 使用者關閉連線
+		// 0     = 清除目前文字的內容
+		// other = 正常顯示接收的資料
+		int flag;
+		memcpy(&flag, m_RecvData, 4);
+		switch ( flag )
+		{
+			case -1:
+				//使用者端關閉連線
+				m_MyView->DeleteClient();
+				break;
+			case 0:
+				//清除所有文字
+				m_MyView->SetWindowText( NULL );
+				//送給其他所有使用者
+				m_MyView->SendToAllUser(NULL, 0);
+				break;
+			default:
+				//接收並顯示使用者端的資料
+				char *pStr = (char *)(m_RecvData + 4);
+				if (flag == 1)
+				{
+					m_MyView->SetWindowText( (LPCTSTR)pStr );
+				}
+				else
+				{
+					m_MyView->AppendMessage( (LPCTSTR)pStr );
+				}
+				//送給其他所有使用者
+				m_MyView->SendToAllUser((LPCTSTR)m_RecvData, len);
+				break;
+		}
 	}
-	delete ReceData;
 }
+

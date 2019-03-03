@@ -46,6 +46,10 @@ CMainFrame::~CMainFrame()
 {
 }
 
+
+/////////////////////////////////////////////////////////////////////////////
+// CMainFrame message handlers
+
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CFrameWnd::OnCreate(lpCreateStruct) == -1)
@@ -83,8 +87,15 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 	// TODO: Modify the Window class or styles here by modifying
 	//  the CREATESTRUCT cs
 
+	int width  = GetSystemMetrics(SM_CXSCREEN);
+	int height = GetSystemMetrics(SM_CYSCREEN);
+
+	cs.cx = (width  / 2);
+	cs.cy = (height / 2);
+
 	return TRUE;
 }
+
 
 /////////////////////////////////////////////////////////////////////////////
 // CMainFrame diagnostics
@@ -102,8 +113,6 @@ void CMainFrame::Dump(CDumpContext& dc) const
 
 #endif //_DEBUG
 
-/////////////////////////////////////////////////////////////////////////////
-// CMainFrame message handlers
 
 /////////////////////////////////////////////////////////////////////////////
 // 類別的成員函式
@@ -113,3 +122,4 @@ void CMainFrame::SetStatusText(int pane, CString str)
 	//設定狀態列的欄位值
 	m_wndStatusBar.SetPaneText(pane, str);
 }
+

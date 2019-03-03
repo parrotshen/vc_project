@@ -18,6 +18,7 @@ class CClientSocket : public CSocket
 // Attributes
 public:
 	CNetworkBoardView* m_MyView;
+	BYTE  m_RecvData[1024];
 
 // Operations
 public:
@@ -30,6 +31,7 @@ public:
 	//{{AFX_VIRTUAL(CClientSocket)
 	public:
 	virtual void OnReceive(int nErrorCode);
+	virtual void OnClose(int nErrorCode);
 	//}}AFX_VIRTUAL
 
 	// Generated message map functions

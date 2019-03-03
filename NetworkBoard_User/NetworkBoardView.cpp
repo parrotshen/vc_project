@@ -41,18 +41,18 @@ CNetworkBoardView::CNetworkBoardView()
 {
 	// TODO: add construction code here
 	m_Client = NULL;
-	m_server_ip = "140.116.247.62";
-	m_server_port = 7770;
-	m_is_modify = TRUE;
+	m_ServerIp = "127.0.0.1";
+	m_ServerPort = 7770;
+	m_IsModify = TRUE;
 }
 
 CNetworkBoardView::~CNetworkBoardView()
 {
-	if(m_Client != NULL)
+	if (m_Client != NULL)
 	{
 		//準備與伺服器斷線
 		int length = -1;
-		m_Client->Send(&length, sizeof(int));
+		m_Client->Send(&length, 4);
 		Sleep(100);
 
 		//關閉 Client Socket
@@ -133,8 +133,8 @@ void CNetworkBoardView::OnInitialUpdate()
 	CEditView::OnInitialUpdate();
 	
 	//Begin Change Font to Fixedsys
-	m_font.DeleteObject();
-	m_font.CreateFont(
+	m_Font.DeleteObject();
+	m_Font.CreateFont(
 		-16,                   // nHeight
 		0,                     // nWidth
 		0,                     // nEscapement
@@ -150,16 +150,18 @@ void CNetworkBoardView::OnInitialUpdate()
 		DEFAULT_PITCH,         // nPitchAndFamily
 		"Fixedsys"             // lpszFacename
 	);
-	GetEditCtrl().SetFont(&m_font, TRUE);
+	GetEditCtrl().SetFont(&m_Font, TRUE);
 	//End Change Font to Fixedsys
 
 	//Begin 與伺服器連線
 	//從 Registry 中取出 Server IP
 	CWinApp* pApp = AfxGetApp();
-	m_server_ip = pApp->GetProfileString("NetworkBoard", "ServerIP", "140.116.247.62");
+	m_ServerIp = pApp->GetProfileString("NetworkBoard", "ServerIP", "127.0.0.1");
 
-	if(m_Client == NULL)
+	if (m_Client == NULL)
+	{
 		ConnectToServer();
+	}
 	//End 與伺服器連線
 }
 
@@ -175,17 +177,19 @@ void CNetworkBoardView::OnUpdate()
 	//Begin 判斷是否有連上 Server 端
 	// 若沒有和 Server 端連線
 	// 則不必傳送資料出去
-	if(m_Client == NULL)
+	if (m_Client == NULL)
+	{
 		return;
+	}
 	//End 判斷是否有連上 Server 端
 
 	//Begin 判斷是否要將資料傳送出去
 	// 若是從 Server 端收到資料
 	// 則不需要再將資料送出
-	if( !m_is_modify )
+	if ( !m_IsModify )
 	{
 		//允許觸發文字內容被修改的事件
-		m_is_modify = !m_is_modify;
+		m_IsModify = !m_IsModify;
 		return;
 	}
 	//End 判斷是否要將資料傳送出去
@@ -200,28 +204,39 @@ void CNetworkBoardView::OnUpdate()
 	::LocalUnlock(h);
 
 	// [3]當文字內容有改變時，將新的內容傳給伺服器
-	if(length == 0)
+	if (length == 0)
 	{
-		m_Client->Send(&length, sizeof(int));
+		m_Client->Send(&length, 4);
 	}
 	else
 	{
+		BYTE *pData = (BYTE *)lpszText;
+		BYTE  buf[1024];
 		int count;
-		int size = 1024 - sizeof(int);
-		int loop = length / size + 1;
+		int loop;
+		int size;
 
-		byte* buf = new byte[1024];
-		for(int i=0; i<loop; i++)
+		loop = (length / 1020) + (((length % 1020) > 0) ? 1 : 0);
+		for (int i=0; i<loop; i++)
 		{
-			count = i + 1;
-			memset(buf, 0x00, 1024);
-			memcpy(buf, &count, sizeof(int));
-			memcpy(buf+sizeof(int), lpszText+i*size, size);
+			count = (i + 1);
+			if (length >= 1020)
+			{
+				size = 1020;
+				length -= 1020;
+			}
+			else
+			{
+				size = length;
+			}
+			//memset(buf, 0, 1024);
+			memcpy(buf, &count, 4);
+			memcpy(buf+4, pData, size);
+			pData += size;
 
-			m_Client->Send(buf, 1024);
+			m_Client->Send(buf, size+4);
 			//Sleep(1);
 		}
-		delete buf;
 	}
 	//End 將資料送給 Server 端
 }
@@ -231,39 +246,29 @@ void CNetworkBoardView::OnUpdate()
 
 void CNetworkBoardView::OnToolConnect() 
 {
-	if(m_Client == NULL)
+	if (m_Client == NULL)
 	{
 		//連線至伺服器的對話盒
 		CServerDlg dlg;
-		dlg.m_ip = m_server_ip;
-		dlg.m_port = m_server_port;
-		if(dlg.DoModal() == IDOK)
+		dlg.m_ip = m_ServerIp;
+		dlg.m_port = m_ServerPort;
+		if (dlg.DoModal() == IDOK)
 		{
-			m_server_ip = dlg.m_ip;
-			m_server_port = dlg.m_port;
+			m_ServerIp = dlg.m_ip;
+			m_ServerPort = dlg.m_port;
 			ConnectToServer();
 		}
 	}
 	else
 	{
-		//與伺服器斷線
-		int length = -1;
-		m_Client->Send(&length, sizeof(int));
-		Sleep(100);
-
-		//關閉 Client Socket
-		m_Client->Close();
-		delete m_Client;
-		m_Client = NULL;
-
-		AfxGetMainWnd()->SetWindowText( "NetworkBoard" );
+		DisconnectToServer();
 	}
 }
 
 void CNetworkBoardView::OnUpdateToolConnect(CCmdUI* pCmdUI) 
 {
 	//控制 "Connect" 這按鈕是 On.. Off..
-	if(m_Client == NULL)
+	if (m_Client == NULL)
 	{
 		// Socket Connect
 		pCmdUI->SetCheck(0);
@@ -288,7 +293,7 @@ void CNetworkBoardView::OnEditSelect()
 void CNetworkBoardView::ConnectToServer() 
 {
 	m_Client = new CClientSocket(this);
-	if( !m_Client->Create() )
+	if ( !m_Client->Create() )
 	{
 		AfxMessageBox("Socket 建立失敗!!");
 		//關閉 Client Socket
@@ -298,7 +303,7 @@ void CNetworkBoardView::ConnectToServer()
 		return;
 	}
 
-	if( !m_Client->Connect(m_server_ip, m_server_port) )
+	if ( !m_Client->Connect(m_ServerIp, m_ServerPort) )
 	{
 		AfxMessageBox("Socket 連線失敗!!");
 		//關閉 Client Socket
@@ -309,17 +314,34 @@ void CNetworkBoardView::ConnectToServer()
 	}
 
 	//連線成功
-	AfxGetMainWnd()->SetWindowText( "NetworkBoard - Connect" );
+	CMainFrame* pMainFrame = (CMainFrame*)AfxGetMainWnd();
+	pMainFrame->SetStatusText(0, "Connection established");
 
 	//將 Server IP 寫入 Registry
 	CWinApp* pApp = AfxGetApp();
-	pApp->WriteProfileString("NetworkBoard", "ServerIP", m_server_ip);
+	pApp->WriteProfileString("NetworkBoard", "ServerIP", m_ServerIp);
+}
+
+void CNetworkBoardView::DisconnectToServer() 
+{
+	//與伺服器斷線
+	int length = -1;
+	m_Client->Send(&length, 4);
+	Sleep(100);
+
+	//關閉 Client Socket
+	m_Client->Close();
+	delete m_Client;
+	m_Client = NULL;
+
+	CMainFrame* pMainFrame = (CMainFrame*)AfxGetMainWnd();
+	pMainFrame->SetStatusText(0, "Connection closed");
 }
 
 void CNetworkBoardView::AppendMessage(LPCSTR lpszMessage)
 {
 	//讓 Update() 事件無效
-	m_is_modify = FALSE;
+	m_IsModify = FALSE;
 	CString strTemp = lpszMessage;
 
 	//將文字附加在後面
@@ -327,3 +349,4 @@ void CNetworkBoardView::AppendMessage(LPCSTR lpszMessage)
 	GetEditCtrl().SetSel(len, len);
 	GetEditCtrl().ReplaceSel(strTemp);
 }
+

@@ -18,6 +18,7 @@ static char THIS_FILE[] = __FILE__;
 CClientSocket::CClientSocket(CNetworkBoardView* view)
 {
 	m_MyView = view;
+	memset(m_RecvData, 0, 1024);
 }
 
 CClientSocket::~CClientSocket()
@@ -41,35 +42,42 @@ void CClientSocket::OnReceive(int nErrorCode)
 	// TODO: Add your specialized code here and/or call the base class
 	CSocket::OnReceive(nErrorCode);
 
+	memset(m_RecvData, 0, 1024);
 	//接收伺服器傳來的資料內容
 	// +----+--------+
 	// |Flag|  Data  |
 	// +----+--------+
-	int ReceDataLen = 1024;
-	byte* ReceData = new byte[ReceDataLen+1];
-	memset(ReceData, 0x00, ReceDataLen+1);
-	int ret = Receive(ReceData, ReceDataLen);
-
-	//取出文字訊息的長度 -> Flag
-	int flag;
-	memcpy(&flag, ReceData, sizeof(int));
-
-	if(flag == 0)
+	int len = Receive(m_RecvData, 1024);
+	if (len >= 4)
 	{
-		m_MyView->SetWindowText( NULL );
-		return;
+		//取出文字訊息的長度 -> Flag
+		int flag;
+		memcpy(&flag, m_RecvData, 4);
+		if (flag == 0)
+		{
+			m_MyView->SetWindowText( NULL );
+			return;
+		}
+		
+		//取出文字訊息的內容 -> Data
+		char *pMsg = (char *)(m_RecvData + 4);
+		if (flag == 1)
+		{
+			m_MyView->SetWindowText( (LPCTSTR)pMsg );
+		}
+		else
+		{
+			m_MyView->AppendMessage( (LPCTSTR)pMsg );
+		}
 	}
-
-	//取出文字訊息的內容 -> Data
-	int size = 1024 - sizeof(int);
-	byte* buf = new byte[size];
-	memset(buf, 0x00, size);
-	memcpy(buf, ReceData+sizeof(int), size);
-	if(flag == 1)
-		m_MyView->SetWindowText( (LPCTSTR)buf );
-	else
-		m_MyView->AppendMessage( (LPCTSTR)buf );
-	delete buf;
-
-	delete ReceData;
 }
+
+void CClientSocket::OnClose(int nErrorCode) 
+{
+	// TODO: Add your specialized code here and/or call the base class
+	CSocket::OnClose(nErrorCode);
+
+	// Disconnect to Server
+	m_MyView->DisconnectToServer();
+}
+
