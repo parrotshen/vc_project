@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<Catalog>
+    <Information number='3'/>
+    <Product>
+        <Name>HP printer</Name>
+        <Price currency="NT">12000</Price>
+        <Mark/>
+    </Product>
+    <Product>
+        <Name>IBM notebook</Name>
+        <Price currency="NT">39000</Price>
+        <Mark>10 percent off</Mark>
+    </Product>
+    <Product>
+        <Name>IBM desktop</Name>
+        <Price currency="NT">31000</Price>
+        <Mark>20 percent off</Mark>
+    </Product>
+</Catalog>
