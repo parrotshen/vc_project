@@ -81,6 +81,7 @@ typedef struct _tEFRsp
 	BYTE dummy[8];
 } tEFRsp;
 
+
 SCARDCONTEXT		hContext = 0;
 SCARDHANDLE			hCard = 0;
 unsigned long		dwActProtocol;
@@ -173,6 +174,7 @@ BYTE CHV_INFO[CHV_INFO_NUM][4] = {
 };
 
 tPinStatus  PIN_STATUS;
+BOOL  g_verbose = FALSE;
 
 void mem_dump(BYTE *data, int size)
 {
@@ -180,7 +182,7 @@ void mem_dump(BYTE *data, int size)
 
     if (NULL == data)
     {
-        printf("NULL pointer\n\n");
+        printf(" NULL pointer\n\n");
     }
 
     for (i=0; i<size; i++)
@@ -189,11 +191,11 @@ void mem_dump(BYTE *data, int size)
         {
             printf("\n");
         }
-        printf("%02X ", data[i]);
+        printf(" %02X", data[i]);
     }
     printf("\n");
 
-    printf("size = %d\n\n", (int)size);
+    printf(" (%d bytes)\n\n", (int)size);
 }
 
 BOOL ParseFCP(
@@ -571,8 +573,11 @@ BOOL CmdSelect(
 	SendLen = 7;
 	RecvLen = sizeof( RecvBuff );
 
-
-	//mem_dump(SendBuff, SendLen);
+	if ( g_verbose )
+	{
+		printf("-> SELECT\r\n");
+		mem_dump(SendBuff, SendLen);
+	}
 
 	status = SCardTransmit(
 				 hCard,
@@ -588,7 +593,11 @@ BOOL CmdSelect(
 
 	if (status == SCARD_S_SUCCESS)
 	{
-		//mem_dump(RecvBuff, RecvLen);
+		if ( g_verbose )
+		{
+			printf("<-\r\n");
+			mem_dump(RecvBuff, RecvLen);
+		}
 
 		if ( CheckSW1SW2(RecvBuff, RecvLen) )
 		{
@@ -624,6 +633,12 @@ BOOL CmdSelectADF(
 	SendLen += AIDlen;
 	RecvLen = sizeof(RecvBuff);
 
+	if ( g_verbose )
+	{
+		printf("-> SELECT ADF\r\n");
+		mem_dump(SendBuff, SendLen);
+	}
+
 	status = SCardTransmit(
 				 hCard,
 				 &ioRequest,
@@ -638,6 +653,12 @@ BOOL CmdSelectADF(
 
 	if (status == SCARD_S_SUCCESS)
 	{
+		if ( g_verbose )
+		{
+			printf("<-\r\n");
+			mem_dump(RecvBuff, RecvLen);
+		}
+
 		if ( CheckSW1SW2(RecvBuff, RecvLen) )
 		{
 			sw->SW1 = RecvBuff[0];
@@ -664,6 +685,11 @@ BOOL CmdGetResponse(BYTE CLA, BYTE len, tResSW1SW2 *sw)
 	SendLen = 5;
 	RecvLen = sizeof(RecvBuff);
 
+	if ( g_verbose )
+	{
+		printf("-> GET RESPONSE\r\n");
+		mem_dump(SendBuff, SendLen);
+	}
 
 	status = SCardTransmit(
 				 hCard,
@@ -679,6 +705,12 @@ BOOL CmdGetResponse(BYTE CLA, BYTE len, tResSW1SW2 *sw)
 
 	if (status == SCARD_S_SUCCESS)
 	{
+		if ( g_verbose )
+		{
+			printf("<-\r\n");
+			mem_dump(RecvBuff, RecvLen);
+		}
+
 		if ( CheckSW1SW2(RecvBuff, RecvLen) )
 		{
 			sw->SW1 = RecvBuff[RecvLen-2];
@@ -703,6 +735,12 @@ BOOL CmdReadBinary(BYTE CLA, BYTE len)
 	SendLen = 5;
 	RecvLen = sizeof(RecvBuff);
 
+	if ( g_verbose )
+	{
+		printf("-> READ BINARY\r\n");
+		mem_dump(SendBuff, SendLen);
+	}
+
 	status = SCardTransmit(
 				 hCard,
 				 &ioRequest,
@@ -717,6 +755,12 @@ BOOL CmdReadBinary(BYTE CLA, BYTE len)
 
 	if (status == SCARD_S_SUCCESS)
 	{
+		if ( g_verbose )
+		{
+			printf("<-\r\n");
+			mem_dump(RecvBuff, RecvLen);
+		}
+
 		if ( CheckSW1SW2(RecvBuff, RecvLen) )
 		{
 			//printf("SW1=%02X, SW2=%02X\r\n", sw->SW1, sw->SW2);
@@ -744,6 +788,12 @@ BOOL CmdReadRecord(
 	SendLen = 5;
 	RecvLen = sizeof(RecvBuff);
 
+	if ( g_verbose )
+	{
+		printf("-> READ RECORD\r\n");
+		mem_dump(SendBuff, SendLen);
+	}
+
 	status = SCardTransmit(
 				 hCard,
 				 &ioRequest,
@@ -758,6 +808,12 @@ BOOL CmdReadRecord(
 
 	if (status == SCARD_S_SUCCESS)
 	{
+		if ( g_verbose )
+		{
+			printf("<-\r\n");
+			mem_dump(RecvBuff, RecvLen);
+		}
+
 		if ( CheckSW1SW2(RecvBuff, RecvLen) )
 		{
 			//printf("SW1=%02X, SW2=%02X\r\n", sw->SW1, sw->SW2);
@@ -996,8 +1052,12 @@ BOOL ReadIMSI(void)
 
 int main(int argc, char* argv[])
 {
-	int   retCode;
+	int retCode;
 
+	if ((argc > 1) && (0 == strcmp("-v", argv[1])))
+	{
+		g_verbose = TRUE;
+	}
 
 	/* [1] Establish context */
 	retCode = SCardEstablishContext(
