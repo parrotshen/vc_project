@@ -123,24 +123,29 @@ void CXMLiteTestDoc::OnFileOpen()
 			return;
 		}
 
-		m_Len = file.GetLength();
-		if (0 == m_Len)
+		UINT size = file.GetLength();
+		if (0 == size)
 		{
 			file.Close();
-			m_pBuf[0] = 0;
 			m_pEditView->CleanText();
 			return;
 		}
 
-		if (m_pBuf != NULL)
+		if (NULL == m_pBuf)
+		{
+			m_pBuf = new BYTE[size + 1];
+			m_Len = size;
+		}
+		else if (size > m_Len)
 		{
 			delete m_pBuf;
+			m_pBuf = new BYTE[size + 1];
+			m_Len = size;
 		}
-		m_pBuf = new BYTE[m_Len + 1];
 
-		file.Read(m_pBuf, m_Len);
+		file.Read(m_pBuf, size);
 
-		m_pBuf[m_Len] = 0;
+		m_pBuf[size] = 0;
 
 		file.Close();
 
@@ -174,6 +179,8 @@ void CXMLiteTestDoc::OnXmlTest1()
 		{
 			m_pEditView->SetWindowText( xml.GetXML() );
 		}
+
+		xml.Close();
 	}
 }
 
@@ -195,6 +202,8 @@ void CXMLiteTestDoc::OnXmlTest2()
 
 		//Test. 2: get child element name and value
 		ChildNameValue(&xml, 0);
+
+		xml.Close();
 	}
 }
 
@@ -233,6 +242,8 @@ void CXMLiteTestDoc::OnXmlTest3()
 				m_pEditView->AppendMessage( "\r\n" );
 			}
 		}
+
+		xml.Close();
 	}
 }
 
@@ -244,7 +255,10 @@ void CXMLiteTestDoc::OnXmlTest4()
 	if (text.GetLength() > 0)
 	{
 		XNode xml;
-		if (NULL == xml.Load( text ))
+		PARSEINFO pi;
+		pi.trim_value = true;
+
+		if (NULL == xml.Load(text, &pi))
 		{
 			m_pEditView->AppendMessage( _T("ERROR\r\n") );
 			return;
@@ -258,6 +272,8 @@ void CXMLiteTestDoc::OnXmlTest4()
 
 		m_pEditView->AppendMessage( xml.GetXML() );
 		m_pEditView->AppendMessage( "\r\n" );
+
+		xml.Close();
 	}
 }
 
@@ -269,7 +285,10 @@ void CXMLiteTestDoc::OnXmlTest5()
 	if (text.GetLength() > 0)
 	{
 		XNode xml;
-		if (NULL == xml.Load( text ))
+		PARSEINFO pi;
+		pi.trim_value = true;
+
+		if (NULL == xml.Load(text, &pi))
 		{
 			m_pEditView->AppendMessage( _T("ERROR\r\n") );
 			return;
@@ -290,6 +309,8 @@ void CXMLiteTestDoc::OnXmlTest5()
 		LPXNode mark = product->AppendChild("Mark", NULL);
 
 		m_pEditView->SetWindowText( xml.GetXML() );
+
+		xml.Close();
 	}
 }
 
@@ -301,7 +322,10 @@ void CXMLiteTestDoc::OnXmlTest6()
 	if (text.GetLength() > 0)
 	{
 		XNode xml;
-		if (NULL == xml.Load( text ))
+		PARSEINFO pi;
+		pi.trim_value = true;
+
+		if (NULL == xml.Load(text, &pi))
 		{
 			m_pEditView->AppendMessage( _T("ERROR\r\n") );
 			return;
@@ -333,6 +357,8 @@ void CXMLiteTestDoc::OnXmlTest6()
 				}
 			}
 		}
+
+		xml.Close();
 	}
 }
 
@@ -407,11 +433,11 @@ void *CXMLiteTestDoc::ChildSearch(void *obj, char *name, char *value)
 		LPXNode child = parent->GetChild( i );
 		if ( child )
 		{
-			if (child->name == name)
+			if (child->name.Compare( name ) == 0)
 			{
 				if ( value )
 				{
-					if (child->value == value)
+					if (child->value.Compare( value ) == 0)
 					{
 						return child;
 					}
