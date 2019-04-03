@@ -163,7 +163,7 @@ void CXMLiteTestDoc::OnXmlTest1()
 		//m_pEditView->CleanText();
 
 		//Test. 1: simple plane XML parse
-		XNode xml;
+		XDoc xml;
 		PARSEINFO pi;
 		pi.trim_value = true;
 
@@ -177,7 +177,11 @@ void CXMLiteTestDoc::OnXmlTest1()
 		}
 		else
 		{
-			m_pEditView->SetWindowText( xml.GetXML() );
+			LPXNode root = xml.GetRoot();
+			if ( root )
+			{
+				m_pEditView->SetWindowText( root->GetXML() );
+			}
 		}
 
 		xml.Close();
@@ -191,8 +195,8 @@ void CXMLiteTestDoc::OnXmlTest2()
 
 	if (text.GetLength() > 0)
 	{
-		XNode xml;
-		if (NULL == xml.Load( text ))
+		XNode root;
+		if (NULL == root.Load( text ))
 		{
 			m_pEditView->AppendMessage( _T("ERROR\r\n") );
 			return;
@@ -201,9 +205,9 @@ void CXMLiteTestDoc::OnXmlTest2()
 		m_pEditView->CleanText();
 
 		//Test. 2: get child element name and value
-		ChildNameValue(&xml, 0);
+		ChildNameValue(&root, 0);
 
-		xml.Close();
+		root.Close();
 	}
 }
 
@@ -214,8 +218,8 @@ void CXMLiteTestDoc::OnXmlTest3()
 
 	if (text.GetLength() > 0)
 	{
-		XNode xml;
-		if (NULL == xml.Load( text ))
+		XNode root;
+		if (NULL == root.Load( text ))
 		{
 			m_pEditView->AppendMessage( _T("ERROR\r\n") );
 			return;
@@ -224,15 +228,15 @@ void CXMLiteTestDoc::OnXmlTest3()
 		m_pEditView->CleanText();
 
 		//Test. 3: get attribute vaule of child
-		if (xml.name == "Catalog")
+		if (root.name == "Catalog")
 		{
 			m_pEditView->AppendMessage( "Information ... number: " );
 			m_pEditView->AppendMessage(
-							xml.GetChildAttrValue(_T("Information"), _T("number"))
+							root.GetChildAttrValue(_T("Information"), _T("number"))
 						);
 			m_pEditView->AppendMessage( "\r\n" );
 
-			XNodes childs = xml.GetChilds( _T("Product") );
+			XNodes childs = root.GetChilds( _T("Product") );
 			for (int i=0; i<childs.size(); i++)
 			{
 				m_pEditView->AppendMessage( "Price ... currency: " );
@@ -243,7 +247,7 @@ void CXMLiteTestDoc::OnXmlTest3()
 			}
 		}
 
-		xml.Close();
+		root.Close();
 	}
 }
 
@@ -254,7 +258,7 @@ void CXMLiteTestDoc::OnXmlTest4()
 
 	if (text.GetLength() > 0)
 	{
-		XNode xml;
+		XDoc xml;
 		PARSEINFO pi;
 		pi.trim_value = true;
 
@@ -267,11 +271,15 @@ void CXMLiteTestDoc::OnXmlTest4()
 		m_pEditView->CleanText();
 
 		//Test. 4: remove a brother node
-		LPXNode brother = xml.GetChild( 0 );
-		xml.RemoveChild( brother );
+		LPXNode root = xml.GetRoot();
+		if ( root )
+		{
+			LPXNode brother = root->GetChild( 0 );
+			root->RemoveChild( brother );
 
-		m_pEditView->AppendMessage( xml.GetXML() );
-		m_pEditView->AppendMessage( "\r\n" );
+			m_pEditView->AppendMessage( xml.GetXML() );
+			m_pEditView->AppendMessage( "\r\n" );
+		}
 
 		xml.Close();
 	}
@@ -284,7 +292,7 @@ void CXMLiteTestDoc::OnXmlTest5()
 
 	if (text.GetLength() > 0)
 	{
-		XNode xml;
+		XDoc xml;
 		PARSEINFO pi;
 		pi.trim_value = true;
 
@@ -296,19 +304,23 @@ void CXMLiteTestDoc::OnXmlTest5()
 
 		m_pEditView->CleanText();
 
-		//Test. 5: append a child node
-		// <Product>
-		//     <Name>Zyxel router</Name>
-		//     <Price currency="NT">5500</Price>
-		//     <Mark/>
-		// </Product>
-		LPXNode product = xml.AppendChild("Product", NULL);
-		LPXNode name = product->AppendChild("Name", "Zyxel router");
-		LPXNode price = product->AppendChild("Price", "5500");
-		price->AppendAttr("curency", "NT");
-		LPXNode mark = product->AppendChild("Mark", NULL);
+		LPXNode root = xml.GetRoot();
+		if ( root )
+		{
+			//Test. 5: append a child node
+			// <Product>
+			//     <Name>Zyxel router</Name>
+			//     <Price currency="NT">5500</Price>
+			//     <Mark/>
+			// </Product>
+			LPXNode product = root->AppendChild("Product", NULL);
+			LPXNode name = product->AppendChild("Name", "Zyxel router");
+			LPXNode price = product->AppendChild("Price", "5500");
+			price->AppendAttr("curency", "NT");
+			LPXNode mark = product->AppendChild("Mark", NULL);
 
-		m_pEditView->SetWindowText( xml.GetXML() );
+			m_pEditView->SetWindowText( xml.GetXML() );
+		}
 
 		xml.Close();
 	}
@@ -321,7 +333,7 @@ void CXMLiteTestDoc::OnXmlTest6()
 
 	if (text.GetLength() > 0)
 	{
-		XNode xml;
+		XDoc xml;
 		PARSEINFO pi;
 		pi.trim_value = true;
 
@@ -333,27 +345,31 @@ void CXMLiteTestDoc::OnXmlTest6()
 
 		m_pEditView->CleanText();
 
-		//Test. 6: modify a child node
-		LPXNode target;
-		for (int i=0; i<xml.GetChildCount(); i++)
+		LPXNode root = xml.GetRoot();
+		if ( root )
 		{
-			LPXNode node = xml.GetChild( i );
-			if (( node ) && (node->name == "Product"))
+			//Test. 6: modify a child node
+			LPXNode target;
+			for (int i=0; i<root->GetChildCount(); i++)
 			{
-				if ( ChildSearch(node, "Name", "IBM desktop") )
+				LPXNode node = root->GetChild( i );
+				if (( node ) && (node->name == "Product"))
 				{
-					target = (LPXNode)ChildSearch(node, "Price", NULL);
-					if ( target )
+					if ( ChildSearch(node, "Name", "IBM desktop") )
 					{
-						target->value = "60000";
+						target = (LPXNode)ChildSearch(node, "Price", NULL);
+						if ( target )
+						{
+							target->value = "60000";
+						}
+						target = (LPXNode)ChildSearch(node, "Mark", NULL);
+						if ( target )
+						{
+							target->value = "New model";
+						}
+						m_pEditView->SetWindowText( xml.GetXML() );
+						break;
 					}
-					target = (LPXNode)ChildSearch(node, "Mark", NULL);
-					if ( target )
-					{
-						target->value = "New model";
-					}
-					m_pEditView->SetWindowText( xml.GetXML() );
-					break;
 				}
 			}
 		}

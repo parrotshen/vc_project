@@ -1,0 +1,277 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Chinese (Taiwan) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHT)
+#ifdef _WIN32
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_TRADITIONAL
+#pragma code_page(950)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHT)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 4, 1\r\n"
+    "#pragma code_page(950)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\Skyeye.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""l.cht\\afxres.rc""          // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\Skyeye.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 235, 75
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "關於 Skyeye"
+FONT 9, "新細明體"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,21,21
+    LTEXT           "Skyeye Version 1.0",IDC_STATIC,40,10,119,8,SS_NOPREFIX
+    LTEXT           "Copyright (C) 2001",IDC_STATIC,40,25,119,8
+    DEFPUSHBUTTON   "確定",IDOK,178,7,50,14,WS_GROUP
+    LTEXT           "Skyeye Motion Detector - Written by Y.J.Shen",
+                    IDC_STATIC,40,45,146,8
+END
+
+IDD_SKYEYE_DIALOG DIALOGEX 0, 0, 275, 209
+STYLE DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | 
+    WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "天眼 - 動作偵測程式"
+FONT 9, "新細明體"
+BEGIN
+    CONTROL         130,IDC_STATIC_BALL,"Static",SS_BITMAP,11,8,15,15
+    CONTROL         "Progress1",IDC_PROGRESS_TH,"msctls_progress32",
+                    PBS_SMOOTH | WS_BORDER,24,145,180,12
+    CONTROL         "Slider1",IDC_SLIDER_TH,"msctls_trackbar32",TBS_TOP | 
+                    WS_TABSTOP,16,157,195,25
+    PUSHBUTTON      "Start",IDC_BUTTON_START,33,7,35,15
+    PUSHBUTTON      "Stop",IDC_BUTTON_STOP,75,7,35,15
+    GROUPBOX        "Capture Window",IDC_STATIC,7,28,260,160
+    CTEXT           "0",IDC_STATIC_TH,215,162,40,15,WS_BORDER
+    LTEXT           "2 Frames / Second",IDC_STATIC,210,12,58,8
+END
+
+IDD_SETTING_DIALOG DIALOG DISCARDABLE  0, 0, 147, 89
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "參數設定"
+FONT 10, "System"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,7,68,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,90,68,50,14
+    LTEXT           "Catch Picture Number：",IDC_STATIC_NUMBER,7,53,80,8
+    EDITTEXT        IDC_EDIT_NUMBER,100,51,40,12,ES_AUTOHSCROLL
+    CONTROL         "Saving Pictures",IDC_CHECK_CATCH,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,38,67,10
+    LTEXT           "Detect Interval (second)：",IDC_STATIC,7,24,86,8
+    EDITTEXT        IDC_EDIT_INTERVAL,100,22,40,12,ES_AUTOHSCROLL
+    LTEXT           "Detect Threshold (PSNR)：",IDC_STATIC,7,9,89,8
+    EDITTEXT        IDC_EDIT_THRESHOLD,100,7,40,12,ES_AUTOHSCROLL
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040404B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "Skyeye MFC Application\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "Skyeye\0"
+            VALUE "LegalCopyright", "Copyright (C) 2001\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "Skyeye.EXE\0"
+            VALUE "ProductName", "Skyeye Application\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x404, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 68
+    END
+
+    IDD_SKYEYE_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 268
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 202
+    END
+
+    IDD_SETTING_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 140
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 82
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MYMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "功能(&F)"
+    BEGIN
+        MENUITEM "開始監測",                    ID_FUNC_START
+        MENUITEM "停止監測",                    ID_FUNC_STOP
+        MENUITEM SEPARATOR
+        MENUITEM "選項",                        ID_TOOL_SETTING
+    END
+    POPUP "工具(&T)"
+    BEGIN
+        MENUITEM "設定視訊來源",                ID_TOOL_SOURCE
+        MENUITEM "設定視訊格式",                ID_TOOL_FORMAT
+        MENUITEM "設定視訊顯示",                ID_TOOL_DISPLAY
+    END
+    POPUP "說明(&H)"
+    BEGIN
+        MENUITEM "關於",                        ID_HELP_ABOUT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_BITMAP_GRAY         BITMAP  DISCARDABLE     "res\\BALLGRAY.BMP"
+IDB_BITMAP_GREEN        BITMAP  DISCARDABLE     "res\\BALLGREEN.BMP"
+IDB_BITMAP_RED          BITMAP  DISCARDABLE     "res\\BALLRED.BMP"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABOUTBOX            "關於 Skyeye(&A)..."
+    IDP_SOCKETS_INIT_FAILED "Windows sockets 啟始失敗。"
+END
+
+#endif    // Chinese (Taiwan) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHT)
+#ifdef _WIN32
+LANGUAGE 4, 1
+#pragma code_page(950)
+#endif //_WIN32
+#include "res\Skyeye.rc2"  // non-Microsoft Visual C++ edited resources
+#include "l.cht\afxres.rc"          // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
