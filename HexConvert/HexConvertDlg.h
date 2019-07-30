@@ -11,7 +11,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // CHexConvertDlg dialog
 
-#define MAX_BUF_LENGTH  8190
+#define MAX_BUF_LENGTH  65534
 
 class CHexConvertDlg : public CDialog
 {

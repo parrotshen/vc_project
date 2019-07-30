@@ -267,15 +267,16 @@ void CHexConvertDlg::OnButtonToAscii()
 /////////////////////////////////////////////////////////////////////////////
 // CHexConvertDlg member methods
 
-#define IS_SPACE(ch)  ((ch == ' ') || (ch == '\t') || (ch == '\r') || (ch == '\n'))
+#define IS_SPACE(ch) \
+	((ch ==  ' ') || \
+	 (ch == '\t') || \
+	 (ch == '\r') || \
+	 (ch == '\n'))
 
 char *GetToken(char *pToken, char *pText)
 {
 	char *pCh;
 	int   i;
-char debug[256];
-
-strcpy(debug, pText);
 
 	if (0x00 == pText[0])
 	{
@@ -340,12 +341,12 @@ BYTE Hex2Dec(char c)
 		case 'A':
 		case 'a':
 			retval = 10;
-            break;
+			break;
 		case 'B':
 		case 'b':
 			retval = 11;
 			break;
-        case 'C':
+		case 'C':
 		case 'c':
 			retval = 12;
 			break;
@@ -364,7 +365,7 @@ BYTE Hex2Dec(char c)
 		default:
 			retval = 0;
 	}
-	
+
 	return retval;
 }
 
