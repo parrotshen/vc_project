@@ -84,6 +84,14 @@ LINK32=link.exe
 # Name "UsimExample - Win32 Debug"
 # Begin Source File
 
+SOURCE=.\StdAfx.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\StdAfx.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\UsimExample.cpp
 # End Source File
 # End Target

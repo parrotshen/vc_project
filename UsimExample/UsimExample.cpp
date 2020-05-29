@@ -296,42 +296,24 @@ BOOL ParseFCP(
             }
             //printf("FCP: file_size=%d\r\n", (int)(*file_len));
         }
-
-        if ((pos[0] == USIM_TLV_FILE_DESC) &&
-            (pos[1] > 2) &&
-            ( record_len ) &&
-            ( record_num ))
+        else if ((pos[0] == USIM_TLV_FILE_DESC) &&
+                 (pos[1] > 2) &&
+                 ( record_len ) &&
+                 ( record_num ))
         {
-            if (pos[1] == 3)
-            {
-                *record_len = pos[4];
-            }
-            else if (pos[1] == 4)
-            {
-                *record_len = ((pos[4] << 8) | (pos[5]));
-            }
-            else if (pos[1] == 5)
-            {
-                *record_len = ((pos[4] << 8) | (pos[5]));
-                *record_num = pos[6];
-            }
-            else
-            {
-                *record_len = ((pos[4] << 8) | (pos[5]));
-                *record_num = ((pos[6] << 8) | (pos[7]));
-            }
+            *record_len = ((pos[4] << 8) | (pos[5]));
+            *record_num = pos[6];
             //printf(
             //    "FCP: record_len=%d, record_num=%d\r\n",
             //    (int)(*record_len),
             //    (int)(*record_num)
             //);
         }
-
-        if ((pos[0] == USIM_TLV_PIN_STATUS_TEMPLATE) &&
-            (pos[1] >= 2) &&
-            (pos[2] == USIM_PS_DO_TAG) &&
-            (pos[3] >= 1) &&
-            ( pin_status ))
+        else if ((pos[0] == USIM_TLV_PIN_STATUS_TEMPLATE) &&
+                 (pos[1] >= 2) &&
+                 (pos[2] == USIM_PS_DO_TAG) &&
+                 (pos[3] >= 1) &&
+                 ( pin_status ))
         {
             BYTE *key_ref_tag;
             BYTE  mask;
