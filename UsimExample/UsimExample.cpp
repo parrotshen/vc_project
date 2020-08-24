@@ -345,7 +345,6 @@ BOOL ParseFCP(
                                 {
                                     pin_status->pin_key_ref = key_ref_tag[2];
                                 }
-                                //printf("FCP: PIN is enabled\r\n");
                                 break;
                             case CHV_PIN2:
                                 if (pin_status->ps_do & mask)
@@ -356,7 +355,6 @@ BOOL ParseFCP(
                                 {
                                     pin_status->pin2_key_ref = key_ref_tag[2];
                                 }
-                                //printf("FCP: PIN2 is enabled\r\n");
                                 break;
                             case CHV_ADM:
                                 if (pin_status->ps_do & mask)
@@ -367,7 +365,6 @@ BOOL ParseFCP(
                                 {
                                     pin_status->adm_key_ref = key_ref_tag[2];
                                 }
-                                //printf("FCP: ADM is enabled\r\n");
                                 break;
                             default:
                                 ;
@@ -836,6 +833,69 @@ BOOL CmdReadRecord(
     return FALSE;
 }
 
+BOOL CmdVerify(
+    BYTE        CLA,
+    BYTE        P1,
+    BYTE        P2,
+    BYTE        len,
+    BYTE       *code,
+    tResSW1SW2 *sw
+)
+{
+    long status;
+
+    ResetSW1SW2( sw );
+
+    SendBuff[0] = CLA;
+    SendBuff[1] = 0x20;
+    SendBuff[2] = P1;
+    SendBuff[3] = P2;
+    SendLen = 4;
+    *(SendBuff+SendLen) = len;
+    SendLen++;
+    if (len > 0)
+    {
+        memcpy(SendBuff+SendLen, code, len);
+        SendLen += len;
+    }
+    RecvLen = sizeof(RecvBuff);
+
+    if ( g_verbose )
+    {
+        printf("-> VERIFY\r\n");
+        mem_dump(SendBuff, SendLen);
+    }
+
+    status = SCardTransmit(
+                 hCard,
+                 &ioRequest,
+                 SendBuff,
+                 SendLen,
+                 NULL,
+                 RecvBuff,
+                 &RecvLen
+             );
+
+    CheckResult(status, "SCardTransmit");
+
+    if (status == SCARD_S_SUCCESS)
+    {
+        if ( g_verbose )
+        {
+            printf("<-\r\n");
+            mem_dump(RecvBuff, RecvLen);
+        }
+
+        sw->SW1 = RecvBuff[0];
+        sw->SW2 = RecvBuff[1];
+        //printf("SW1=%02X, SW2=%02X\r\n", sw->SW1, sw->SW2);
+
+        return TRUE;
+    }
+
+    return FALSE;
+}
+
 BOOL ReadEfDir(void)
 {
     tResSW1SW2 sw;
@@ -1034,41 +1094,47 @@ _AID_3GPP_FOUND:
 
         // find PIN status indication (0xC6)
         success = ParseFCP(RecvBuff, rspLen, &PIN_STATUS, NULL, NULL, NULL);
-        if ( success )
-        {
-            if ( PIN_STATUS.pin_enable )
-            {
-                printf("PIN .... enabled\r\n");
-            }
-            else
-            {
-                printf("PIN .... disabled\r\n");
-            }
-
-            if ( PIN_STATUS.pin2_enable )
-            {
-                printf("PIN2 ... enabled\r\n");
-            }
-            else
-            {
-                printf("PIN2 ... disabled\r\n");
-            }
-
-            if ( PIN_STATUS.adm_enable )
-            {
-                printf("ADM .... enabled\r\n");
-            }
-            else
-            {
-                printf("ADM .... disabled\r\n");
-            }
-        }
-        else
+        if ( !success )
         {
             printf("WARN: cannot find the PIN status indication\r\n");
         }
-        printf("\r\n");
     }
+
+    return TRUE;
+}
+
+BOOL RetryCounter(void)
+{
+    tResSW1SW2 sw;
+    BOOL success;
+
+    CHAR name[3][8] = { "PIN", "PIN2", "ADM" };
+    BOOL enable;
+    BYTE key;
+    BYTE i;
+
+    for (i=0; i<3; i++)
+    {
+        enable = ((0 == i) ? PIN_STATUS.pin_enable  :
+                  (1 == i) ? PIN_STATUS.pin2_enable : PIN_STATUS.adm_enable);
+        key = ((0 == i) ? PIN_STATUS.pin_key_ref  :
+               (1 == i) ? PIN_STATUS.pin2_key_ref : PIN_STATUS.adm_key_ref);
+
+        success = CmdVerify(FIRST_CLA, 0x00, key, 0, NULL, &sw);
+        if ( !success )
+        {
+            printf("ERROR: Verify retry counter fail\r\n");
+            //return FALSE;
+        }
+
+        printf(
+            "%4s ... %s (retry counter %c)\r\n",
+            name[i],
+            (enable ? "enabled" : "disabled"),
+            ((sw.SW1 == 0x63) ? ((sw.SW2 & 0xF) + '0') : '?')
+        );
+    }
+    printf("\r\n");
 
     return TRUE;
 }
@@ -1202,6 +1268,8 @@ int main(int argc, char* argv[])
         printf("ERROR: Select ADF_USIM fail\r\n");
         goto _EXIT;
     }
+
+    RetryCounter();
 
     if ( !ReadIMSI() )
     {
