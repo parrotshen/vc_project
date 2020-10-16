@@ -7,6 +7,7 @@
 #include "LogCheckEditView.h"
 #include "LogCheckListView.h"
 #include "MainFrm.h"
+#include <afxpriv.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -23,6 +24,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	//{{AFX_MSG_MAP(CMainFrame)
 	ON_WM_CREATE()
 	ON_WM_CLOSE()
+	ON_MESSAGE(WM_SETMESSAGESTRING, OnSetMessageString)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -40,7 +42,7 @@ static UINT indicators[] =
 CMainFrame::CMainFrame()
 {
 	// TODO: add member initialization code here
-	
+	m_StatusMsg = "尚未進行設定";
 }
 
 CMainFrame::~CMainFrame()
@@ -166,11 +168,24 @@ void CMainFrame::OnClose()
 	CFrameWnd::OnClose();
 }
 
+LRESULT CMainFrame::OnSetMessageString(WPARAM wParam, LPARAM lParam)
+{
+	LRESULT lr = CFrameWnd::OnSetMessageString(wParam, lParam);
+
+	if (wParam == AFX_IDS_IDLEMESSAGE)
+	{
+		m_wndStatusBar.SetPaneText(0, m_StatusMsg, TRUE);
+	}
+
+	return lr;
+}
 
 /////////////////////////////////////////////////////////////////////////////
 // CMainFrame member methods
 
 void CMainFrame::SetStatusMessage(CString msg)
 {
-	m_wndStatusBar.SetPaneText(0, msg);
+	m_wndStatusBar.SetPaneText(0, msg, TRUE);
+	m_StatusMsg = msg;
 }
+

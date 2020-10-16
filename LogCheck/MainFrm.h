@@ -44,12 +44,14 @@ public:
 protected:  // control bar embedded members
 	CStatusBar  m_wndStatusBar;
 	CToolBar    m_wndToolBar;
+	CString     m_StatusMsg;
 
 // Generated message map functions
 protected:
 	//{{AFX_MSG(CMainFrame)
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnClose();
+	afx_msg LRESULT OnSetMessageString(WPARAM wParam, LPARAM lParam);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
