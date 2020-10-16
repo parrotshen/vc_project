@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<PowerOn Timeout="60">
+<Keyword Label="FSBL">Xilinx Zynq MP</Keyword>
+<Keyword Label="u-boot">U-Boot 2019.01</Keyword>
+<Keyword Label="Linux">Linux version 4.19.0-gary</Keyword>
+<Keyword Label="Finish">Build Path:</Keyword>
+</PowerOn>
