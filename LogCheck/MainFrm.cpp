@@ -24,6 +24,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	//{{AFX_MSG_MAP(CMainFrame)
 	ON_WM_CREATE()
 	ON_WM_CLOSE()
+	ON_WM_SIZE()
 	ON_MESSAGE(WM_SETMESSAGESTRING, OnSetMessageString)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
@@ -43,6 +44,7 @@ CMainFrame::CMainFrame()
 {
 	// TODO: add member initialization code here
 	m_StatusMsg = "尚未進行設定";
+	m_splitterReady = FALSE;
 }
 
 CMainFrame::~CMainFrame()
@@ -135,6 +137,7 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 	GetClientRect(ClientSize);
 	int height = ClientSize.bottom / 2;
 	int width  = ClientSize.right;
+
 	if( !m_splitter.CreateStatic(this, 2, 1) )
 		return FALSE;
 	if( !m_splitter.CreateView(
@@ -151,6 +154,8 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 			CSize(width, height * 1),
 			pContext) )
 		return FALSE;
+
+	m_splitterReady = TRUE;
 	return TRUE;
 	// End Splitter Window
 }
@@ -166,6 +171,22 @@ void CMainFrame::OnClose()
 	}
 
 	CFrameWnd::OnClose();
+}
+
+void CMainFrame::OnSize(UINT nType, int cx, int cy) 
+{
+	CFrameWnd::OnSize(nType, cx, cy);
+	
+	// TODO: Add your message handler code here
+	CRect rect;
+	GetWindowRect( &rect );
+	if ( m_splitterReady )  // m_splitterReady set in OnCreateClient
+	{
+		int height = rect.Height() * 2 / 5;
+		m_splitter.SetRowInfo(0, height, 20);
+		//m_splitter.SetRowInfo(1, height, 20);
+		m_splitter.RecalcLayout();
+	}
 }
 
 LRESULT CMainFrame::OnSetMessageString(WPARAM wParam, LPARAM lParam)

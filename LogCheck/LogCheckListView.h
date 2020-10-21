@@ -20,7 +20,7 @@ protected:
 public:
 	int m_ItemCurr;
 	int m_ItemNext;
-	int m_ColumnTime;
+	int m_ColumnTime[2];
 
 // Operations
 public:
@@ -29,7 +29,8 @@ public:
 	void CleanListItem();
 	void AddListItem();
 	void UpdateListItem(int column, char *pWord);
-	void UpdateTime();
+	void UpdateStartTime();
+	void UpdateEndTime();
 
 // Overrides
 	// ClassWizard generated virtual function overrides

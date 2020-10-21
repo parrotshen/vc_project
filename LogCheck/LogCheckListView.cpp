@@ -20,7 +20,8 @@ CLogCheckListView::CLogCheckListView()
 {
 	m_ItemCurr = 0;
 	m_ItemNext = 0;
-	m_ColumnTime = 1;
+	m_ColumnTime[0] = 1;
+	m_ColumnTime[1] = 2;
 }
 
 CLogCheckListView::~CLogCheckListView()
@@ -79,14 +80,13 @@ void CLogCheckListView::OnInitialUpdate()
 	
 	DWORD style = GetListCtrl().GetExtendedStyle();
 	style |= LVS_EX_FULLROWSELECT;
-	style |= LVS_EX_GRIDLINES;
 	GetListCtrl().SetExtendedStyle( style );
 
 	// TODO: Add your specialized code here and/or call the base class
-	//Begin: «Ø¥ß¼ÐÃDÄæ¦ì(Column)
+	//Begin: å»ºç?æ¨™é?æ¬„ä?(Column)
 	LV_COLUMN col;
 	col.mask = LVCF_FMT | LVCF_SUBITEM | LVCF_TEXT | LVCF_WIDTH;
-	col.fmt = LVCFMT_LEFT;
+	col.fmt = LVCFMT_CENTER;
 	col.iSubItem = 0;
 	col.pszText = "NO";
 	col.cx = 60;
@@ -95,16 +95,22 @@ void CLogCheckListView::OnInitialUpdate()
 	col.mask = LVCF_FMT | LVCF_SUBITEM | LVCF_TEXT | LVCF_WIDTH;
 	col.fmt = LVCFMT_CENTER;
 	col.iSubItem = 1;
-	col.pszText = "Time";
-	col.cx = 100;
+	col.pszText = "Start time";
+	col.cx = 120;
 	GetListCtrl().InsertColumn(1, &col);
 
-	//End:   «Ø¥ß¼ÐÃDÄæ¦ì(Column)
+	col.mask = LVCF_FMT | LVCF_SUBITEM | LVCF_TEXT | LVCF_WIDTH;
+	col.fmt = LVCFMT_CENTER;
+	col.iSubItem = 2;
+	col.pszText = "End time";
+	col.cx = 120;
+	GetListCtrl().InsertColumn(2, &col);
+	//End:   å»ºç?æ¨™é?æ¬„ä?(Column)
 }
 
 
 /////////////////////////////////////////////////////////////////////////////
-// Ãþ§Oªº¦¨­û¨ç¦¡
+// é¡žåˆ¥?„æ??¡å‡½å¼?
 
 void CLogCheckListView::CleanListColumn()
 {
@@ -122,6 +128,8 @@ void CLogCheckListView::CleanListColumn()
 			/* Keep the first column */
 			GetListCtrl().DeleteColumn( 1 );
 		}
+		m_ColumnTime[0] = 1;
+		m_ColumnTime[1] = 2;
 	}
 }
 
@@ -130,9 +138,14 @@ void CLogCheckListView::AddListColumn(int column, char *pLabel)
 	LV_COLUMN param;
 	int width = 80;
 
-	if (strcmp(pLabel, "Time") == 0)
+	if (strcmp(pLabel, "Start time") == 0)
 	{
-		m_ColumnTime = column;
+		m_ColumnTime[0] = column;
+		width = 120;
+	}
+	else if (strcmp(pLabel, "End time") == 0)
+	{
+		m_ColumnTime[1] = column;
 		width = 120;
 	}
 
@@ -170,10 +183,17 @@ void CLogCheckListView::UpdateListItem(int column, char *pWord)
 	GetListCtrl().SetItemText(m_ItemCurr, column, (LPCTSTR)pWord);
 }
 
-void CLogCheckListView::UpdateTime()
+void CLogCheckListView::UpdateStartTime(void)
 {
-	CString t = CTime::GetCurrentTime().Format("%H:%M:%S");
+	CString string = CTime::GetCurrentTime().Format("%H:%M:%S");
 
-	GetListCtrl().SetItemText(m_ItemCurr, m_ColumnTime, t);
+	GetListCtrl().SetItemText(m_ItemCurr, m_ColumnTime[0], string);
+}
+
+void CLogCheckListView::UpdateEndTime(void)
+{
+	CString string = CTime::GetCurrentTime().Format("%H:%M:%S");
+
+	GetListCtrl().SetItemText(m_ItemCurr, m_ColumnTime[1], string);
 }
 

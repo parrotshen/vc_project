@@ -35,6 +35,9 @@ BEGIN_MESSAGE_MAP(CLogCheckDoc, CDocument)
 	ON_COMMAND(ID_FILE_OPEN, OnFileOpen)
 	ON_COMMAND(ID_FILE_SAVE, OnFileSave)
 	ON_COMMAND(ID_FILE_SAVE_AS, OnFileSaveAs)
+	ON_UPDATE_COMMAND_UI(ID_FILE_OPEN, OnUpdateFileOpen)
+	ON_UPDATE_COMMAND_UI(ID_FILE_SAVE, OnUpdateFileSave)
+	ON_UPDATE_COMMAND_UI(ID_FILE_SAVE_AS, OnUpdateFileSaveAs)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -47,13 +50,16 @@ CLogCheckDoc::CLogCheckDoc()
 	m_pEditView = NULL;
 	m_pListView = NULL;
 
-	m_bConnected = FALSE;
-
 	m_SerialParam.port_num  = 8;
 	m_SerialParam.baud_rate = 115200;
 	m_SerialParam.parity    = 'N';
 	m_SerialParam.data_bits = 8;
 	m_SerialParam.stop_bits = 1;
+	m_bConnected = FALSE;
+
+	m_fileName = XML_CONF_FILE;
+	m_timeout = 60;
+	m_keywordNum = 0;
 }
 
 CLogCheckDoc::~CLogCheckDoc()
@@ -70,23 +76,23 @@ BOOL CLogCheckDoc::OnNewDocument()
 	// TODO: add reinitialization code here
 	// (SDI documents will reuse this document)
 
-	//Begin: ¨ú±o View
+	//Begin: ?–å? View
 	POSITION pos = GetFirstViewPosition();
 	if (pos == NULL) return FALSE;
 
-	//[1] ¨ú±o CLogCheckEditView
+	//[1] ?–å? CLogCheckEditView
 	m_pEditView = (CLogCheckEditView*)GetNextView( pos );
 	if (pos == NULL) return FALSE;
 
-	//[2] ¨ú±o CLogCheckListView
+	//[2] ?–å? CLogCheckListView
 	m_pListView = (CLogCheckListView*)GetNextView( pos );
 
 	// set EditView read only
 	m_pEditView->GetEditCtrl().SetReadOnly();
-	//End:   ¨ú±o View
+	//End:   ?–å? View
 
 	/* Read configuration from .xml */
-	ReadXML( XML_CONF_FILE );
+	ReadXML( m_fileName );
 
 	return TRUE;
 }
@@ -129,7 +135,7 @@ void CLogCheckDoc::Dump(CDumpContext& dc) const
 BOOL CLogCheckDoc::SaveModified() 
 {
 	// TODO: Add your specialized code here and/or call the base class
-	//¨ú®ø ¸ß°Ý¬O§_­n¦sÀÉ ªº¹ï¸Ü²°
+	//?–æ? è©¢å??¯å¦è¦å?æª??„å?è©±ç?
 	SetModifiedFlag(FALSE);
 
 	return CDocument::SaveModified();
@@ -151,25 +157,14 @@ void CLogCheckDoc::OnAppConnect()
 						);
 		if ( m_bConnected )
 		{
-			CMainFrame *frame = (CMainFrame *)AfxGetMainWnd();
-			if (frame != NULL)
-			{
-				frame->SetWindowText("Connect - LogCheck");
-			}
-
 			m_pEditView->InitialBuffer( TRUE );
 		}
 	}
 	else
 	{
 		MySerialIF_CloseConnection();
+		m_pEditView->CancelCheck();
 		m_bConnected = FALSE;
-
-		CMainFrame *frame = (CMainFrame *)AfxGetMainWnd();
-		if (frame != NULL)
-		{
-			frame->SetWindowText("Disconnect - LogCheck");
-		}
 	}
 }
 
@@ -207,7 +202,8 @@ void CLogCheckDoc::OnAppConfig()
 			m_pListView->AddListColumn((i + 1), m_label[i]);
 		}
 
-		m_pListView->AddListColumn((i + 1), "Time");
+		m_pListView->AddListColumn((i + 1), "Start time");
+		m_pListView->AddListColumn((i + 2), "End time");
 
 		CMainFrame *frame = (CMainFrame *)AfxGetMainWnd();
 		if (frame != NULL)
@@ -235,44 +231,68 @@ void CLogCheckDoc::OnFileNew()
 void CLogCheckDoc::OnFileOpen() 
 {
 	// TODO: Add your command handler code here
-    CFileDialog dlg(
-        TRUE,
-        NULL,
-        "*.xml",
-        NULL,
-        "XML File (*.xml)|*.xml|All File (*.*)|*.*|"
-    );
-    if (dlg.DoModal() == IDOK)
-    {
-		ReadXML( dlg.GetPathName() );
+	CFileDialog dlg(
+		TRUE,
+		NULL,
+		"*.xml",
+		NULL,
+		"XML File (*.xml)|*.xml|All File (*.*)|*.*|"
+	);
+	if (dlg.DoModal() == IDOK)
+	{
+		m_fileName = dlg.GetPathName();
+		if ( ReadXML( m_fileName ) )
+		{
+			m_pEditView->InitialBuffer( TRUE );
+			m_pListView->CleanListColumn();
+		}
 	}
+}
+
+void CLogCheckDoc::OnUpdateFileOpen(CCmdUI* pCmdUI) 
+{
+	// TODO: Add your command update UI handler code here
+	pCmdUI->Enable( !m_bConnected );
 }
 
 void CLogCheckDoc::OnFileSave() 
 {
 	// TODO: Add your command handler code here
-	//WriteXML( XML_CONF_FILE );
+	WriteXML( m_fileName );
+}
+
+void CLogCheckDoc::OnUpdateFileSave(CCmdUI* pCmdUI) 
+{
+	// TODO: Add your command update UI handler code here
+	pCmdUI->Enable( !m_bConnected );
 }
 
 void CLogCheckDoc::OnFileSaveAs() 
 {
 	// TODO: Add your command handler code here
-    CFileDialog dlg(
-        TRUE,
-        NULL,
-        "*.xml",
-        NULL,
-        "XML File (*.xml)|*.xml|All File (*.*)|*.*|"
-    );
-    if (dlg.DoModal() == IDOK)
-    {
-		WriteXML( dlg.GetPathName() );
+	CFileDialog dlg(
+		TRUE,
+		NULL,
+		"*.xml",
+		NULL,
+		"XML File (*.xml)|*.xml|All File (*.*)|*.*|"
+	);
+	if (dlg.DoModal() == IDOK)
+	{
+		m_fileName = dlg.GetPathName();
+		WriteXML( m_fileName );
 	}
+}
+
+void CLogCheckDoc::OnUpdateFileSaveAs(CCmdUI* pCmdUI) 
+{
+	// TODO: Add your command update UI handler code here
+	pCmdUI->Enable( !m_bConnected );
 }
 
 
 /////////////////////////////////////////////////////////////////////////////
-// Ãþ§Oªº¦¨­û¨ç¦¡
+// CLogCheckDoc member functions
 
 void CLogCheckDoc::CloseConnection()
 {
@@ -281,7 +301,7 @@ void CLogCheckDoc::CloseConnection()
 		MySerialIF_CloseConnection();
 		m_bConnected = FALSE;
 	}
-	m_pEditView->InitialBuffer( TRUE );
+	m_pEditView->InitialBuffer( FALSE );
 }
 
 BOOL CLogCheckDoc::ReadXML(CString name)
@@ -380,6 +400,8 @@ BOOL CLogCheckDoc::ReadXML(CString name)
 
 	xml.Close();
 
+	SetTitle( name );
+
 	return TRUE;
 }
 
@@ -437,7 +459,9 @@ void CLogCheckDoc::WriteXML(CString name)
 	text += "\r\n";
 
 	fwrite((BYTE *)(LPCTSTR)text, 1, text.GetLength(), pFile);
-	
+
 	fclose( pFile );
+
+	SetTitle( name );
 }
 

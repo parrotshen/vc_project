@@ -29,6 +29,7 @@ public:
 	tMySerialParam  m_SerialParam;
 	BOOL  m_bConnected;
 
+	CString m_fileName;
 	CHAR  m_label[16][64];
 	CHAR  m_keyword[16][256];
 	UINT  m_keywordNum;
@@ -72,6 +73,9 @@ protected:
 	afx_msg void OnFileOpen();
 	afx_msg void OnFileSave();
 	afx_msg void OnFileSaveAs();
+	afx_msg void OnUpdateFileOpen(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateFileSave(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateFileSaveAs(CCmdUI* pCmdUI);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

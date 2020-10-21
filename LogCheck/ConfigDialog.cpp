@@ -63,7 +63,7 @@ BOOL CConfigDialog::OnInitDialog()
 	m_CheckList.InsertColumn(0, &col);
 
 	col.mask = LVCF_FMT | LVCF_SUBITEM | LVCF_TEXT | LVCF_WIDTH;
-	col.fmt = LVCFMT_CENTER;
+	col.fmt = LVCFMT_LEFT;
 	col.iSubItem = 1;
 	col.pszText = "Keyword";
 	col.cx = 400;

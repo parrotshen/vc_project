@@ -19,6 +19,7 @@ protected: // create from serialization only
 // Attributes
 public:
 	CSplitterWnd m_splitter;
+	BOOL         m_splitterReady;
 
 // Operations
 public:
@@ -51,6 +52,7 @@ protected:
 	//{{AFX_MSG(CMainFrame)
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnClose();
+	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg LRESULT OnSetMessageString(WPARAM wParam, LPARAM lParam);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()

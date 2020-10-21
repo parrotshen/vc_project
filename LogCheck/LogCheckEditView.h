@@ -25,16 +25,16 @@ public:
 	CLogCheckDoc *m_AppDoc;
 	CFont    m_Font;
 
-	UINT     m_lineCnt;
 	UINT     m_charCnt;
 	UINT     m_keywordCnt;
-	CHAR     m_log[2048][256];
-	BOOL     m_testOK;
+	CHAR     m_log[1024];
 
 // Operations
 public:
 	void AppendMessage(LPCSTR lpszMessage);
 	void InitialBuffer(BOOL clean);
+	void DoCheck(CHAR *pLog);
+	void CancelCheck(void);
 	void GenErrorLog(UINT no);
 
 // Overrides
